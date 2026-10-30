@@ -1,0 +1,24 @@
+{
+  "$schema": "https://schema.railpack.com",
+  "provider": "node",
+  "packages": { "bun": "1.4.3", "node": "22" },
+  "steps": {
+    "install": {
+      "commands": ["bun install --frozen-lockfile"]
+    },
+    "build": {
+      "commands": [
+        "bun run build:binary",
+        "ls -la apps/cli/dist"
+      ]
+    }
+  },
+  "deploy": {
+    "aptPackages": ["git", "ca-certificates", "openssh-client"],
+    "variables": {
+      "HOME": "/data",
+      "THINKRAIL_NO_ANALYTICS": "1"
+    },
+    "startCommand": "./apps/cli/dist/thinkrail --host 0.0.0.0 --port 3000 --no-open"
+  }
+}
